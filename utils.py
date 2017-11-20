@@ -85,11 +85,15 @@ def random_shadow(image):
     """
     Generates and adds random shadow
     """
+
+    height = image.shape[0]
+    width = image.shape[1]
+
     # (x1, y1) and (x2, y2) forms a line
     # xm, ym gives all the locations of the image
-    x1, y1 = IMAGE_WIDTH * np.random.rand(), 0
-    x2, y2 = IMAGE_WIDTH * np.random.rand(), IMAGE_HEIGHT
-    xm, ym = np.mgrid[0:IMAGE_HEIGHT, 0:IMAGE_WIDTH]
+    x1, y1 = width * np.random.rand(), 0
+    x2, y2 = width * np.random.rand(), height
+    xm, ym = np.mgrid[0:height, 0:width]
 
     # mathematically speaking, we want to set 1 below the line and zero otherwise
     # Our coordinate is up side down.  So, the above the line: 
@@ -144,11 +148,12 @@ def batch_generator(data_dir, image_paths, steering_angles, batch_size, is_train
         for index in np.random.permutation(image_paths.shape[0]):
             center, left, right = image_paths[index]
             steering_angle = steering_angles[index]
-            # argumentation
+            # augmentation
             if is_training and np.random.rand() < 0.6:
                 image, steering_angle = augument(data_dir, center, left, right, steering_angle)
             else:
                 image = load_image(data_dir, center) 
+
             # add the image and steering angle to the batch
             images[i] = preprocess(image)
             steers[i] = steering_angle
@@ -156,4 +161,3 @@ def batch_generator(data_dir, image_paths, steering_angles, batch_size, is_train
             if i == batch_size:
                 break
         yield images, steers
-
