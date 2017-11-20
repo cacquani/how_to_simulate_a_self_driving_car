@@ -110,7 +110,11 @@ def train_model(model, args, X_train, X_valid, y_train, y_valid):
     #For instance, this allows you to do real-time data augmentation on images on CPU in 
     #parallel to training your model on GPU.
     #so we reshape our data into their appropriate batches and train our model simulatenously
-    model.fit_generator(batch_generator(args.data_dir, X_train, y_train, args.batch_size, True),
+
+
+    batches = batch_generator(args.data_dir, X_train, y_train, args.batch_size, True)
+
+    model.fit_generator(batches,
                         args.samples_per_epoch,
                         args.nb_epoch,
                         max_q_size=1,
@@ -132,6 +136,7 @@ def main():
     """
     Load train/validation data set and train the model
     """
+
     parser = argparse.ArgumentParser(description='Behavioral Cloning Training Program')
     parser.add_argument('-d', help='data directory',        dest='data_dir',          type=str,   default='data')
     parser.add_argument('-t', help='test size fraction',    dest='test_size',         type=float, default=0.2)
