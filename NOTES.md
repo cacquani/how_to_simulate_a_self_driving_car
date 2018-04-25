@@ -8,7 +8,7 @@ Both NVidia and Udacity did it
 
 Three phases:
 
-* ?
+* Generate data
 * Training
 * Testing
 
@@ -56,3 +56,61 @@ Client -> car brain
   source activate car-behavioral-cloning
 
   conda install tensorflow
+
+## The Model
+
+Machine learning models general idea:
+
+y = brains(X)
+
+where
+
+y = label (how to drive)
+
+X = input (images)
+
+Keras -> python machine learning library
+
+Everything arranged in layers
+
+2d convolution layer -> lookup on wikipedia
+
+* image input
+* filter aka kernel
+* dot product
+* move along
+* repeat
+* outputs a new layer
+
+* Neurons are only locally connected (i.e. in width and height)
+* less computationally expensive (images too large for full connection)
+* can find spatial patterns
+* much better at generalised learning (fully connected overfit)
+
+What is a fully connected layer? (as opposite to 2d convolution layer)
+
+* Traditional
+* Every single neuron is connected to every other neuron
+
+
+  model.add(Conv2D(24, 5, 5, activation='elu', subsample=(2, 2)))
+
+2d convolution layer
+24 sets of random weights
+5x5 pixels kernel
+exponential linear unit activation function
+shift 2x, 2y every iteration
+
+  model.add(Dropout(args.keep_prob))
+
+How many nodes are randomly ignored
+Helps prevent over-fitting
+speeds up training
+
+  model.add(Flatten())
+
+flatten the data at the dropout rate
+
+  model.add(Dense(100, activation='elu'))
+
+Fully connected layer (after a few passages on a 2d convolution
